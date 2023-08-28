@@ -10,6 +10,12 @@
                 </ul>
 
                 <div class="text-end">
+                    <a role="button" id="kakao-login" class="btn btn-outline-light me-2"
+                       sec:authorize="isAnonymous()"
+                       th:href="@{/oauth2/authorization/kakao}">
+                        <img alt="kakao login"
+                             src="/images/kakao_login_medium.png" style="border:0px;">
+                    </a>
                     <a role="button" id="signup" class="btn btn-outline-light me-2" th:href="@{/articles/join}"
                     sec:authorize="isAnonymous()">signup</a>
                     <a role="button" id="login" class="btn btn-outline-light me-2" th:href="@{/articles/loginForm}"
