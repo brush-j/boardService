@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Header Fragment 선언부 -->
+<div th:fragment="header">
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a id="home" th:href="@{/articles/lists}" class="nav-link px-2 text-secondary">Home</a></li>
+                </ul>
+
+                <div class="text-end">
+                    <a role="button" id="signup" class="btn btn-outline-light me-2" th:href="@{/articles/join}"
+                    sec:authorize="isAnonymous()">signup</a>
+                    <a role="button" id="login" class="btn btn-outline-light me-2" th:href="@{/articles/loginForm}"
+                    sec:authorize="isAnonymous()">Login</a>
+                    <a role="button" id="logout" class="btn btn-outline-light me-2" th:href="@{/articles/logout}" onclick="return confirm('로그아웃 하시겠습니까?');"
+                    sec:authorize="isAuthenticated()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <br>
+</div>
+</html>

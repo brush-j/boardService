@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:Layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="/js/check.js"></script>
+</head>
+<body>
+<!-- Header fragment 사용 -->
+<th:block th:replace="fragments/header::header"></th:block>
+<!-- Content fragment 사용 -->
+<th:block layout:fragment="content"></th:block>
+<main id="article-main" class="container" th:object="${dto}">
+  <header id="article-header" class="py-5 text-center">
+    <h1 th:text="*{title}">첫번째 글</h1>
+  </header>
+
+  <div class="row g-5">
+    <section class="col-md-3 col-lg-4 order-md-last">
+      <aside>
+        <p th:text="*{createdBy}">Mini</p>
+        <p th:text="*{email}">mini@mail.com</p>
+        <p th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2022-01-01</p>
+      </aside>
+    </section>
+    <article class="col-md-9 col-lg-8">
+      <pre th:text="*{content}">본문</pre>
+    </article>
+  </div>
+
+  <div class="row g-5" id="article-buttons">
+    <form id="delete-article-form">
+      <div class="pb-5 d-grid gap-2 d-md-block"
+           <!--th:if="${#authorization.expression('isAuthenticated()')} and
+       *{createdBy} == ${#authentication.name}"-->>
+        <a class="btn btn-success me-md-2" role="button"
+           th:onclick="|location.href='@{/articles/{id}/update(id=*{id})}'|">수정</a>
+        <button class="btn btn-danger me-md-2" type="button"
+                th:onclick="|location.href='@{/articles/{id}/delete(id=*{id})}'|">삭제</button>
+      </div>
+    </form>
+  </div>
+  <div class="row g-5">
+    <section>
+      <form class="row g-3 comment-form" method="post" th:action="@{/articles/{id}/articleComment(id=*{id})}">
+        <input type="hidden" class="article-id" name="id">
+        <div class="col-md-9 col-lg-8">
+          <label for="comment-textbox" hidden>댓글</label>
+          <textarea class="form-control comment-textbox" id="comment-textbox" placeholder="댓글 쓰기.." rows="3" th:field="${comment.content}" required></textarea>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <label for="comment-submit" hidden>댓글 쓰기</label>
+          <button class="btn btn-primary" id="comment-submit" type="submit" value="${comment.id}">쓰기</button>
+        </div>
+      </form>
+
+      <ul id="article-comments" class="row col-md-10 col-lg-8 pt-3">
+        <li class="parent-comment">
+          <form th:each="listDto : ${listDto}" th:object="${listDto}" method="post" th:action="@{/articles/{id}/articleComments/{article-comment-id}/delete(id=${dto.id},article-comment-id=${listDto.id})}">
+            <input type="hidden" class="article-id" name="*{id}">
+            <div class="row">
+              <div class="col-md-10 col-lg-9">
+                <strong th:text="*{nickname}"></strong>
+                <small th:text="${#temporals.format(listDto.createdAt, 'yyyy년 MM월 dd일 HH시 MM분')}"></small>
+                <p class="mb-1" th:text="*{content}"></p>
+              </div>
+              <div class="col-2 mb-3 align-self-center">
+                <button type="submit" class="btn btn-outline-danger">삭제</button>
+              </div>
+            </div>
+          </form>
+          <!--
+          <div class="row">
+            <details class="col-md-10 col-lg-9 mb-4">
+              <summary>댓글 달기</summary>
+              <form class="comment-form">
+                <input type="hidden" class="article-id">
+                <input type="hidden" class="parent-comment-id">
+                <textarea class="form-control comment-textbox" placeholder="댓글 쓰기.." rows="2" required></textarea>
+                <button class="form-control btn btn-primary mt-2" type="submit">쓰기</button>
+              </form>
+            </details>
+          </div>
+          -->
+        </li>
+      </ul>
+    </section>
+  </div>
+</main>
+<!-- Footer fragment 사용 -->
+<th:block th:replace="fragments/footer::footer"></th:block>
+</body>
+</html>
