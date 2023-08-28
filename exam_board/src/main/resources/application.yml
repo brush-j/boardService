@@ -1,0 +1,62 @@
+server:
+  port: 80
+
+---
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/exam_board
+    username: root
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+---
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 741344833163-vqlfh0n7t4bf8hg69m4h0d43l0nmue78.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
+          naver:
+            clientId: BAXQ7zvvMbJKf_k8OLI1
+            clientSecret: PIAsvrVr3P
+            scope:
+              - name
+              - email
+            clientName: Naver
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost/login/oauth2/code/naver
+
+          kakao:
+            client-id: 26320b98534fcc1f0e22bca5b1268280
+            clientSecret: LNq5tHdTwjmly3UzOyIIRtBkSkn3W9Il
+            redirectUri: http://localhost/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+
+        provider:
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
+            userNameAttribute: response
+
+          kakao:
+            authorization_uri: https://kauth.kakao.com/oauth/authorize
+            token_uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user_name_attribute: id
