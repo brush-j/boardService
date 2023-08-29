@@ -19,7 +19,7 @@ import java.util.List;
 public class UserAccount extends AuditingFields{
 
     @Id
-    @Column(length = 50)
+    @Column(length = 100)
     private String userId;
 
     @Setter
